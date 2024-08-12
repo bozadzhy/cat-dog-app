@@ -27,6 +27,7 @@ interface BreedPageProps {
 const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
   const [pet, setPet] = useState<Pet | null>(null);
   const [similarPictures, setSimilarPictures] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const id = params.productId;
   const breedObj = pet?.breeds ? pet.breeds[0] : null;
@@ -50,6 +51,7 @@ const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
   }, [id]);
 
   useEffect(() => {
+    setLoading(false);
     const fetchData = async (url1: string, url2: string) => {
       try {
         const [response1, response2] = await Promise.all([
@@ -66,17 +68,13 @@ const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
         };
 
         if (isValidData(response1)) {
-          console.log("Данные из первого запроса:", response1);
           return response1;
         } else if (isValidData(response2)) {
-          console.log("Данные из второго запроса:", response2);
           return response2;
         } else {
-          console.error("Оба запроса вернули некорректные данные");
           return null;
         }
       } catch (error) {
-        console.error("Ошибка при выполнении запросов:", error);
         return null;
       }
     };
@@ -84,20 +82,28 @@ const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
     fetchData(urlDog, urlCat).then((result) => {
       if (result) {
         setSimilarPictures(result);
+        setLoading(true);
       }
     });
   }, [breedId]);
 
   return (
-    <div>
+    <div className="m-20">
       {pet && (
-        <div>
-          <img src={pet.url} alt="pet" />
+        <div className="p-4 max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+          <img className="w-full object-cover" src={pet.url} alt="pet" />
           {pet.breeds && pet.breeds.length > 0 ? (
             pet.breeds.map((obj) => (
-              <div key={obj.temperament}>
-                {obj.name}
-                {obj.temperament}
+              <div>
+                <h4
+                  className="text-center text-xl font-semibold text-gray-800"
+                  key={obj.temperament}
+                >
+                  {obj.name}
+                </h4>
+                <p className="text-center text-gray-600 mt-2">
+                  {obj.temperament}
+                </p>
               </div>
             ))
           ) : (
@@ -105,12 +111,22 @@ const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
           )}
         </div>
       )}
-      <div>
-        {similarPictures &&
-          similarPictures.length > 0 &&
+      <h5 className="text-center text-gray-600 mt-4">Breed images:</h5>
+      <div className="flex justify-center items-center flex-wrap">
+        {similarPictures && similarPictures.length > 0 ? (
           similarPictures.map((obj: any, i) => (
-            <img key={`${obj.width}+ ${i}`} src={obj.url} alt="pets" />
-          ))}
+            <div className="m-4">
+              <img
+                className="w-24 object-cover"
+                key={`${obj.width}+ ${i}`}
+                src={obj.url}
+                alt="pets"
+              />
+            </div>
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     </div>
   );

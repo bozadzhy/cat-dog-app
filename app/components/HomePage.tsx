@@ -29,18 +29,31 @@ const HomePage: React.FC = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  // console.log("dogs", dogs);
+
+  const urlDog = "https://api.thedogapi.com/v1/images/search?limit=50";
+  const urlCat = "https://api.thecatapi.com/v1/images/search?limit=50&";
+
+  const dogKey =
+    "live_rnTY11HZc9MyC3e7J3NgVGUahCmv8WJJE0sLcQlvLvLZKG51poMY9FVuRsL2ezwX";
+  const catKey =
+    "live_qYr9FjpMAb31JbDcE2Qp1KK3gBWcu5ZOxCSGe4ynQN2SvY4Ha8LFYxaBWOIxc0uP";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [response1, response2] = await Promise.all([
-          fetch(
-            "https://api.thedogapi.com/v1/images/search?limit=20&api_key=live_rnTY11HZc9MyC3e7J3NgVGUahCmv8WJJE0sLcQlvLvLZKG51poMY9FVuRsL2ezwX"
-          ),
-          fetch(
-            "https://api.thecatapi.com/v1/images/search?limit=20&api_key=live_qYr9FjpMAb31JbDcE2Qp1KK3gBWcu5ZOxCSGe4ynQN2SvY4Ha8LFYxaBWOIxc0uP"
-          ),
+          fetch(urlDog, {
+            method: "GET",
+            headers: {
+              "x-api-key": dogKey,
+            },
+          }),
+          fetch(urlCat, {
+            method: "GET",
+            headers: {
+              "x-api-key": catKey,
+            },
+          }),
         ]);
 
         if (!response1.ok || !response2.ok) {
@@ -77,58 +90,54 @@ const HomePage: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <main className="">
-      <div className="p-5 flex justify-around">
-        <div className="  p-4">
-          <p className="text-center uppercase">Cats</p>
-          <ul className="flex flex-col">
-            {cats.map(({ id, url, breeds }) => (
-              <li
-                key={url}
-                className="m-4 p-4 w-96 border rounded hover:bg-gray-100"
-              >
-                <Link href={`/${id}`}>
-                  {breeds &&
-                    breeds.length > 0 &&
-                    breeds.map((obj, i) => (
-                      <p
-                        className="uppercase text-center"
-                        key={`${obj.name}+${i}`}
-                      >
-                        {obj.name}
-                      </p>
-                    ))}
-                  <img src={url} alt="photo" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="  p-4">
-          <p className="text-center uppercase">Dogs</p>
-          <ul className="flex flex-col">
-            {dogs.map(({ id, url, breeds }) => (
-              <li
-                key={url}
-                className="m-4 p-4 w-96 border rounded hover:bg-gray-100"
-              >
-                <Link href={`/${id}`}>
-                  {breeds &&
-                    breeds.length > 0 &&
-                    breeds.map((obj, i) => (
-                      <p
-                        className="uppercase text-center"
-                        key={`${obj.name}+${i}`}
-                      >
-                        {obj.name}
-                      </p>
-                    ))}
-                  <img src={url} alt="photo" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <main className="p-10 md:flex">
+      <div className="max-w-xs mx-auto flex flex-col">
+        <h2 className="text-center text-lg font-semibold text-gray-800">
+          Cats:
+        </h2>
+        {cats.map(({ id, url, breeds }) => (
+          <div
+            key={url}
+            className="m-4 max-w-xs mx-auto bg-white shadow-2xl rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
+          >
+            <Link href={`/${id}`}>
+              <img className="p-2 w-64 object-cover" src={url} alt="photo" />
+              {breeds &&
+                breeds.length > 0 &&
+                breeds.map((obj, i) => (
+                  <div key={`${obj.name}+${i}`}>
+                    <h2 className="text-center text-lg font-semibold text-gray-800">
+                      {obj.name}
+                    </h2>
+                  </div>
+                ))}
+            </Link>
+          </div>
+        ))}
+      </div>
+      <div className="max-w-xs mx-auto flex flex-col">
+        <h2 className="text-center text-lg font-semibold text-gray-800">
+          Dogs:
+        </h2>
+        {dogs.map(({ id, url, breeds }) => (
+          <div
+            key={url}
+            className="m-4 max-w-xs mx-auto bg-white shadow-2xl rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
+          >
+            <Link href={`/${id}`}>
+              <img className="p-2 w-64 object-cover" src={url} alt="photo" />
+              {breeds &&
+                breeds.length > 0 &&
+                breeds.map((obj, i) => (
+                  <div key={`${obj.name}+${i}`}>
+                    <h2 className="text-center text-lg font-semibold text-gray-800">
+                      {obj.name}
+                    </h2>
+                  </div>
+                ))}
+            </Link>
+          </div>
+        ))}
       </div>
     </main>
   );
