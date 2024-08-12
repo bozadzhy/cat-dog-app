@@ -94,7 +94,7 @@ const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
           <img className="w-full object-cover" src={pet.url} alt="pet" />
           {pet.breeds && pet.breeds.length > 0 ? (
             pet.breeds.map((obj) => (
-              <div>
+              <div key={obj.id}>
                 <h4
                   className="text-center text-xl font-semibold text-gray-800"
                   key={obj.temperament}
@@ -115,7 +115,7 @@ const BreedPage: React.FC<BreedPageProps> = ({ params }) => {
       <div className="flex justify-center items-center flex-wrap">
         {similarPictures && similarPictures.length > 0 ? (
           similarPictures.map((obj: any, i) => (
-            <div className="m-4">
+            <div key={i} className="m-4">
               <img
                 className="w-24 object-cover"
                 key={`${obj.width}+ ${i}`}

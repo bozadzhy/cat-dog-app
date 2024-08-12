@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const urlDog = "https://api.thedogapi.com/v1/images/search?limit=50";
-  const urlCat = "https://api.thecatapi.com/v1/images/search?limit=50&";
+  const urlCat = "https://api.thecatapi.com/v1/images/search?limit=50";
 
   const dogKey =
     "live_rnTY11HZc9MyC3e7J3NgVGUahCmv8WJJE0sLcQlvLvLZKG51poMY9FVuRsL2ezwX";
