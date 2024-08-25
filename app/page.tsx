@@ -3,9 +3,9 @@ import PetCard from "./components/PetCard";
 const urlDog = "https://api.thedogapi.com/v1/images/search?limit=20";
 const urlCat = "https://api.thecatapi.com/v1/images/search?limit=20";
 
-export const dogKey =
+const dogKey =
   "live_rnTY11HZc9MyC3e7J3NgVGUahCmv8WJJE0sLcQlvLvLZKG51poMY9FVuRsL2ezwX";
-export const catKey =
+const catKey =
   "live_qYr9FjpMAb31JbDcE2Qp1KK3gBWcu5ZOxCSGe4ynQN2SvY4Ha8LFYxaBWOIxc0uP";
 
 async function getDogs() {

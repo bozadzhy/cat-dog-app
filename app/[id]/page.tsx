@@ -1,5 +1,9 @@
 import React from "react";
-import { catKey, dogKey } from "../page";
+import { Pet } from "../components/PetCard";
+const dogKey =
+  "live_rnTY11HZc9MyC3e7J3NgVGUahCmv8WJJE0sLcQlvLvLZKG51poMY9FVuRsL2ezwX";
+const catKey =
+  "live_qYr9FjpMAb31JbDcE2Qp1KK3gBWcu5ZOxCSGe4ynQN2SvY4Ha8LFYxaBWOIxc0uP";
 
 interface PetPageProps {
   params: {
@@ -7,7 +11,7 @@ interface PetPageProps {
   };
 }
 
-const PetPage = async ({ params }: PetPageProps) => {
+const PetPage:React.FC<PetPageProps> = async ({ params }) => {
   const { id } = params;
 
   const fetchDogData = async () => {
@@ -58,8 +62,7 @@ const PetPage = async ({ params }: PetPageProps) => {
   ]);
 
   const data = dogData || catData;
-  // console.log("data",data);
-  const breedsIdArr = data.breeds ? data.breeds.map((obj: any) => obj.id) : [];
+  const breedsIdArr = data.breeds ? data.breeds.map((obj: Pet) => obj.id) : [];
   const breedsId = breedsIdArr[0];
 
   const fetchDogBreeds = async () => {
